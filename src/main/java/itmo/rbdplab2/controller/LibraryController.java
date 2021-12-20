@@ -1,6 +1,8 @@
 package itmo.rbdplab2.controller;
 
+import itmo.rbdplab2.client.BadRequestException;
 import itmo.rbdplab2.model.Book;
+import itmo.rbdplab2.repository.LibraryRepository;
 import itmo.rbdplab2.service.LibraryService;
 import java.time.LocalDate;
 import java.util.List;
@@ -18,17 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class LibraryController {
 
     private final LibraryService libraryService;
+    private final LibraryRepository libraryRepository;
 
     @Autowired
-    LibraryController(LibraryService libraryService) {
+    LibraryController(LibraryService libraryService, LibraryRepository libraryRepository) {
         this.libraryService = libraryService;
+        this.libraryRepository = libraryRepository;
     }
-    //добавить книгу
-    //поиск
-    //по названию или фрагменту
-    //по имени автора
-    //ключевое словл
-    //выход
 
     @PostMapping("/add")
     public Book addFood (
@@ -41,6 +39,23 @@ public class LibraryController {
     ) {
         return libraryService.save(new Book(name, author, genre,
             LocalDate.parse(date), annotation, isbn));
+    }
+
+    @PostMapping("/update")
+    public void addFood (
+        @RequestParam(name = "name") String name,
+        @RequestParam(name = "id") Long id
+    ) {
+        Book book = libraryRepository.findBookById(id);
+        book.setName(name);
+        libraryRepository.save(book);
+    }
+
+    @GetMapping("/check")
+    public Book addFood (
+        @RequestParam(name = "flag") Boolean flag
+    ) throws BadRequestException {
+        return libraryService.transactionTest(flag);
     }
 
     @GetMapping("/find")

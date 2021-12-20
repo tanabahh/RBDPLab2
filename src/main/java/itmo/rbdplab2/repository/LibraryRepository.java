@@ -13,4 +13,5 @@ public interface LibraryRepository extends CrudRepository<Book, Long>, JpaReposi
     List<Book> findByAuthorName(String author);
     List<Book> findByAnnotationContainingIgnoreCase(String value);
     List<Book> findByNameContainingIgnoreCase(String value);
+    Book findBookById(Long id);
 }

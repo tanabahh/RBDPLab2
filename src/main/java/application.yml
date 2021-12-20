@@ -1,0 +1,9 @@
+resilience4j:
+  retry:
+    instances:
+      test:
+        maxAttempts: 1
+        waitDuration: 0ms
+        enableExponentialBackoff: false
+        retryExceptions:
+          - itmo.rbdplab2.client.BadRequestException
